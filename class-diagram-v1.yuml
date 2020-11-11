@@ -1,0 +1,6 @@
+// {type:class}
+// {direction:topDown}
+// {generate:true}
+
+[Game | canvas:HTMLCanvasElement;ctx:CanvasRenderingContext2D; KeyboardListener:KeyboardListener; gameState:string; winner:string; Car1:Car; Car2:Car | rollDice();loop();draw(); begin(); dice(); upgrade(); animate();end();writeTextToCanvas();random()]->[Car|image:HTMLImageElement;name:string; distance:number; xPosition:number; yPosition:number; upgrade:number| setDistance(distanceRaced:number);getDistance();getxPostition();getyPosition(); getName(); getUpgrade(); setUpgrade();draw(ctx:CanvasRenderingContext2D);move();loadImage(source: string)]
+[Game]->[KeyboardListener]

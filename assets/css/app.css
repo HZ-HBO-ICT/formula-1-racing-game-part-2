@@ -1,0 +1,8 @@
+body {
+    overflow: hidden;
+}
+
+canvas{
+    /* background-image: url("./../img/space.jpg"); */
+    background-color: teal;
+}

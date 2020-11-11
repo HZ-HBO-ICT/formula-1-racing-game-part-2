@@ -79,6 +79,8 @@ class Game {
       this.beginScreen();
     } else if (this.gameState == "dice") {
       this.diceScreen();
+    } else if (this.gameState == "chooseUpgrade") {
+      this.upgradeScreen();
     } else if (this.gameState == "animate") {
       this.animate();
       // this.gameState = "end";
@@ -113,23 +115,23 @@ class Game {
 
   private diceScreen() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.gameState = "animate";
+    this.gameState = "chooseUpgrade";
   }
 
-  // private upgradeScreen() {
-  //   this.writeTextToCanvas(
-  //     "Press B to boost the Car",
-  //     30,
-  //     this.canvas.width / 2,
-  //     this.canvas.height - 50
-  //   );
-  //   if (this.keyboardListener.isKeyDown(KeyboardListener.KEY_B)) {
-  //     this.car1.upgrade = this.rollDice(100, 800);
-  //     this.car2.upgrade = this.rollDice(100, 800);
-  //     console.log(this.car1.upgrade);
-  //     this.gameState = "animate";
-  //   }
-  // }
+  private upgradeScreen() {
+    this.writeTextToCanvas(
+      "Press B to boost the Car",
+      30,
+      this.canvas.width / 2,
+      this.canvas.height - 50
+    );
+    if (this.keyboardListener.isKeyDown(KeyboardListener.KEY_B)) {
+      this.car1.upgrade = this.rollDice(100, 800);
+      this.car2.upgrade = this.rollDice(100, 800);
+      console.log(this.car1.upgrade);
+      this.gameState = "animate";
+    }
+  }
 
   private endScreen() {
     console.log("in end");
@@ -159,41 +161,30 @@ class Game {
   }
 
   private animate() {
-    console.log("animate");
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    if (this.car1.xPostition < this.car1.distance) {
-      this.car1.move();
-    } else if (this.car2.xPostition < this.car2.distance) {
-      this.car2.move();
-    } else if (
-      this.car1.xPostition >= this.car1.distance &&
-      this.car2.xPostition >= this.car2.distance
-    ) {
+
+    //if (boost + distance) is on screen?
+    if (this.car1.upgrade + this.car1.distance >= this.canvas.width) {
+      console.log("busted");
+      this.winner = this.car2.name;
       this.gameState = "end";
-      console.log("end");
+    } else if (this.car2.upgrade + this.car2.distance >= this.canvas.width) {
+      this.winner = this.car1.name;
+      console.log("busted");
+      this.gameState = "end";
+    } else {
+      if (this.car1.xPostition < this.car1.distance) {
+        this.car1.move();
+      } else if (this.car2.xPostition < this.car2.distance) {
+        this.car2.move();
+      } else if (
+        this.car1.xPostition >= this.car1.distance &&
+        this.car2.xPostition >= this.car2.distance
+      ) {
+        this.gameState = "end";
+        console.log("end");
+      }
     }
-    // //if (boost + distance) is on screen?
-    // if (this.car1.upgrade + this.car1.distance >= this.canvas.width) {
-    //   console.log("busted");
-    //   this.winner = this.car2.name;
-    //   this.gameState = "end";
-    // } else if (this.car2.upgrade + this.car2.distance >= this.canvas.width) {
-    //   this.winner = this.car1.name;
-    //   console.log("busted");
-    //   this.gameState = "end";
-    // } else {
-    //   if (this.car1.xPostition < this.car1.distance) {
-    //     this.car1.move();
-    //   } else if (this.car2.xPostition < this.car2.distance) {
-    //     this.car2.move();
-    //   } else if (
-    //     this.car1.xPostition >= this.car1.distance &&
-    //     this.car2.xPostition >= this.car2.distance
-    //   ) {
-    //     this.gameState = "end";
-    //     console.log("end");
-    //   }
-    // }
   }
 
   /**
